@@ -20,5 +20,10 @@ rm -fr /home/docker-user/.bundle && mkdir -p /home/docker-user/.bundle && \
 
 export DOCKER_HOST=`/sbin/ip route|awk '/default/ { print $3 }'` || true
 
+if [ ! -e 'app/assets/images/GitHub-Mark.png' ]; then
+    curl 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' \
+        --output 'app/assets/images/GitHub-Mark.png' 
+fi
+
 bundle exec rails db:create db:migrate
 bundle exec foreman start -f Procfile.dev "$@"

@@ -45,6 +45,10 @@ RUN umask 0002; bundle exec yarn install
 # Now we get everything else in
 COPY . /app
 
+# Add in the github logo
+RUN umask 0002; curl 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png' \
+    --output 'app/assets/images/GitHub-Mark.png' 
+
 # Precompile our assets
 RUN umask 0002; RAILS_ENV=production DATABASE_URL=postgresql://NODB@COMPILEME:5432 \
                 bundle exec rails assets:precompile
