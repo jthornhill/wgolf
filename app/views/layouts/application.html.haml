@@ -21,8 +21,8 @@
               %ul.nav.nav-pills
                 - if current_user&.login_key.present?
                   %li.nav-item{ data: { controller: 'copy-text', 'copy-text-contents-value' => login_users_url(user_id: current_user.id, login_key: current_user.login_key) } }
-                    %a.nav-link{ data: { action: 'click->copy-text#copy' } }
-                      Copy my login link
+                    %a.p-1.me-1.nav-link{ data: { action: 'click->copy-text#copy' } }
+                      my login link
                 %li.nav-item
                   = link_to "Wordle (#{@wordle_number})", "https://www.nytimes.com/games/wordle/index.html",
                     target: '_blank', class: 'nav-link p-1'
