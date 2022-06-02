@@ -58,7 +58,8 @@
           %tbody
             - round.reversed_results_by_user_id.each do |user_id, results|
               %tr
-                %td= User.find(user_id)
+                %td
+                  %span.text-nowrap= User.find(user_id)
                 - missing = false
                 %td
                   %span.text-nowrap
