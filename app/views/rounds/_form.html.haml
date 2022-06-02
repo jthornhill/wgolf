@@ -1,0 +1,17 @@
+= form_for @round do |f|
+  - if @round.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@round.errors.count, "error")} prohibited this round from being saved:"
+      %ul
+        - @round.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :wordle_num
+    = f.text_field :wordle_num
+  .form-group
+    = f.label :user_ids
+    = f.select(:user_ids, options_for_select(User.all.for_select, @round.users.pluck(:id)),
+      {multiple: true}, { class: "selectpicker form-control", "data-live-search" => true, multiple: true } )
+  .actions
+    = f.submit 'Save'

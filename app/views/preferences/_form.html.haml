@@ -1,0 +1,14 @@
+= form_for preference do |f|
+  - if preference.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(preference.errors.count, "error")} prohibited this preference from being saved:"
+      %ul
+        - preference.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :time_zone
+    = f.select :time_zone, options_for_select(ActiveSupport::TimeZone.all.map{ |tz| [tz.to_s, tz.tzinfo.name] }, current_user.local_time_zone.name), {}, class: 'form-select'
+    = f.hidden_field :user_id, value: current_user.id
+  .actions
+    = f.submit 'Save', class: 'btn btn-primary'

@@ -1,0 +1,7 @@
+- if detail.present?
+  - detail&.share_text&.split("\n")&.each do |ln|
+    %div.text-nowrap= ln
+- elsif penalize
+  Missing (counts as a 7)
+- else
+  Not submitted yet

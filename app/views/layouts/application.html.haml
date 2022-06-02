@@ -1,0 +1,37 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title Wgolf
+    %meta{:content => "width=device-width,initial-scale=1", :name => "viewport"}/
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
+  %body.bg-light
+    %header.d-flex.flex-wrap.justify-content-center.py-1.mb-1.border-bottom.bg-body
+      .container.d-flex.flex-wrap.justify-content-center
+        %a.d-flex.align-items-center.mb-0.me-md-auto.text-dark.text-decoration-none{ href: '/' }
+          %span.fs-4 wGolf
+        .navbar.col-12.col-lg-auto.mb-0.mb-lg-0
+          %ul.nav.nav-pills
+            - if current_user&.login_key.present?
+              %li.nav-item{ data: { controller: 'copy-text', 'copy-text-contents-value' => login_users_url(user_id: current_user.id, login_key: current_user.login_key) } }
+                %a.nav-link{ data: { action: 'click->copy-text#copy' } }
+                  Copy my login link
+            %li.nav-item
+              = link_to "Wordle (#{@wordle_number})", "https://www.nytimes.com/games/wordle/index.html",
+                target: '_blank', class: 'nav-link'
+    .container
+      - if flash[:success]
+        .alert.alert-success
+          = flash[:success]
+      - if flash.notice
+        .alert.alert-primary
+          = flash.notice
+      - if flash.alert
+        .alert.alert-danger
+          = flash.alert
+    .container{ data: { controller: 'util' } }
+      .bg-body.border.rounded-3.p-3
+        = yield

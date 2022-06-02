@@ -1,0 +1,15 @@
+/node_modules
+/log
+/tmp
+.bundle
+coverage
+Dockerfile
+docker-compose.override.yml
+devise.yaml
+.gitlab-ci.yml
+coverage
+/deploy
+.git
+config/credentials/*.key
+/config/master.key
+/config/credentials/production.key

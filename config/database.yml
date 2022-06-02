@@ -1,0 +1,21 @@
+---
+# The real info will come from DATABASE_URL (as set in environment.rb)
+# Any extra settings specified here will be merged with the DATABASE_URL data
+default: &default
+  encoding: utf8
+  template: template0
+  pool: 10
+  url: <%= ENV.fetch('DATABASE_URL') %>
+  reconnect: true
+
+test:
+  <<: *default
+  database: test
+
+development:
+  <<: *default
+  database: development
+
+production:
+  <<: *default
+  database: production

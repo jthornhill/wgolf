@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Override / set up some things required to run for local development. Assumes
+# volume mounts coming from docker compose
+
+set -e
+set -x
+
+# Exit us from deployment mode and ensure we have the latest updates
+bundle config unset deployment
+bundle config set path vendor/bundle
+bundle config --delete without
+bundle config --delete with
+bundle install
+bundle exec yarn install
+
+# For some reason, the guard gem does not respect the bundle config.
+rm -fr /home/docker-user/.bundle && mkdir -p /home/docker-user/.bundle && \
+    ln -s /usr/local/bundle/config /home/docker-user/.bundle/config
+
+export DOCKER_HOST=`/sbin/ip route|awk '/default/ { print $3 }'` || true
+
+bundle exec rails db:create db:migrate
+bundle exec foreman start -f Procfile.dev "$@"

@@ -1,0 +1,88 @@
+%h3
+  Hi #{current_user}!
+- day_wordle = Wordle.for_date(Date.current)
+- if day_wordle.result_submissions.find_by(user_id: current_user.id).nil?
+  .alert.alert-danger{ role: 'alert' }
+    You have not submitted wordle #{day_wordle}
+    (in #{current_user.local_time_zone} #{link_to('change zone', preferences_path)})
+- else
+  .alert.alert-success{ role: 'alert' }
+    You already submitted wordle #{day_wordle}
+    (in #{current_user.local_time_zone} #{link_to('change zone', preferences_path)})
+
+%p.lead
+  = render 'result_submissions/form', result_submission: ResultSubmission.new
+
+.row.my-2
+  .col-auto
+    %div.text-decoration-underline.link-primary{ data: { bs_toggle: 'tooltip', bs_html: 'true'}, title: render('landing/help'), href: '_' }
+      help
+.row.my-2
+  .col-auto.overflow-auto
+    - rounds = current_user.rounds
+    - if rounds.empty?
+      %h5 You are not signed up for any rounds, but maybe you will be!
+      Here are your most recent results
+      %table.table.table-bordered
+        %thead
+          %tr
+            - current_user.result_submissions.order(id: :desc).limit(10).reverse.each do |submission|
+              - w = submission.wordle
+              %th
+                - if w.game_number == @wordle_number
+                  = link_to w.game_number, "https://www.nytimes.com/games/wordle/index.html",
+                    target: '_blank'
+                - else
+                  = w.game_number
+        %tbody
+          %tr
+            - current_user.result_submissions.order(id: :desc).limit(10).reverse.each do |submission|
+              %td= render 'result_td_content', result: submission.score, detail: submission, penalize: false
+    - else
+      - rounds.each do |round|
+        %h5 #{round.wordle} to #{Wordle.for_game_num(round.wordle.game_number + 17)}
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th Player
+              %th +/-
+              - if round.finished?
+                %th Total
+              - round.wordles.reverse.each do |w|
+                %th
+                  - if w.game_number == @wordle_number
+                    = link_to w.game_number, "https://www.nytimes.com/games/wordle/index.html",
+                      target: '_blank'
+                  - else
+                    %span{ data: { bs_toggle: 'tooltip', bs_html: 'true'}, title: w.date }= w.game_number
+          %tbody
+            - round.reversed_results_by_user_id.each do |user_id, results|
+              %tr
+                %td= User.find(user_id)
+                - missing = false
+                %td
+                  %span.text-nowrap
+                    - if results[-2] < 0
+                      %b.text-success
+                        = results[-2]
+                    - elsif results[-2] > 0
+                      %b.text-danger
+                        = results[-2]
+                    - else
+                      %b
+                        = results[-2]
+                    - if missing
+                      %b.text-danger *
+                - if round.finished?
+                  %td
+                    %span.text-nowrap
+                      - if missing
+                        = results[-1]
+                        %b.text-danger *
+                      - else
+                        = results[-1]
+                - results[0..-3].each_with_index do |r, idx|
+                  - penalize = round.reversed_wordles[idx].finished?
+                  %td
+                    = render 'result_td_content', result: r, detail: round.reversed_result_for_user_id_by_idx(user_id, idx),
+                      penalize: penalize

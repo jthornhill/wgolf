@@ -1,0 +1,21 @@
+%span{ data: { bs_toggle: 'tooltip', bs_html: 'true'}, title: render('landing/wordle_result', { detail: detail, penalize: penalize }) }
+  - if result == 7
+    .text-danger
+      %b x
+  - elsif result.blank?
+    - if penalize
+      %div
+        %b.text-danger *
+    - else
+      %div
+        .text-muted.fst-italic ~
+  - else
+    - if result == 4
+      %div
+        %b= result
+    - elsif result > 4
+      .text-danger
+        %b= result
+    - elsif result < 4
+      .text-success
+        %b= result

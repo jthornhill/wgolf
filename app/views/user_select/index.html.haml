@@ -1,0 +1,4 @@
+%h1 User selection!
+= form_with url: assign_user_user_select_index_path do|f|
+  = f.select :user_id, options_for_select(User.all.order(:name).map{ |u| [ u.name, u.id ] })
+  = f.submit 'Become user', class: 'btn btn-primary'

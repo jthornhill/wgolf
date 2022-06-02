@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @result_submission.user
+%p
+  %b Wordle:
+  = @result_submission.wordle
+%p
+  %b Share text:
+  = @result_submission.share_text
+
+= link_to 'Edit', edit_result_submission_path(@result_submission)
+\|
+= link_to 'Back', result_submissions_path

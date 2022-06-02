@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  wordle: one
+  share_text: MyText
+
+two:
+  user: two
+  wordle: two
+  share_text: MyText

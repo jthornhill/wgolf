@@ -1,0 +1,15 @@
+= form_for result_submission do |f|
+  - if result_submission.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(result_submission.errors.count, "error")} prohibited this result_submission from being saved:"
+      %ul
+        - result_submission.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.hidden_field :user_id, value: current_user.id
+  .field
+    = f.label :share_text, 'Click "share" when you finish your wordle. Paste the entire contents here!', class: 'form-label'
+    = f.text_area :share_text, class: 'form-control', rows: 6, columns: 10, minlength: 10, required: true
+  .actions
+    = f.submit 'Submit your wordle', class: 'btn btn-primary'

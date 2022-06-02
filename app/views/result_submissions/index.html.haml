@@ -1,0 +1,26 @@
+%h1 Listing result_submissions
+
+%table
+  %thead
+    %tr
+      %th User
+      %th Wordle
+      %th Share text
+      %th
+      %th
+      %th
+
+  %tbody
+    - @result_submissions.each do |result_submission|
+      %tr
+        %td= result_submission.user
+        %td= result_submission.wordle
+        %td= result_submission.share_text
+        %td= link_to 'Show', result_submission
+        %td= link_to 'Edit', edit_result_submission_path(result_submission)
+        %td= link_to 'Destroy', result_submission,
+          data: { turbo_method: "delete", turbo_confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Result submission', new_result_submission_path
