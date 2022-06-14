@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PW}
 
   app:
-    image: ${APP_NAME}
+    image: ghcr.io/jthornhill/wgolf:latest
     user: "${APP_UID}:0"
     build: "./"
     volumes:
