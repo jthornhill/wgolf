@@ -8,9 +8,13 @@ class Round < ApplicationRecord
     self.wordle = Wordle.find_or_initialize_by(game_number: wordle_num)
   end
 
+  def final_wordle
+    @final_wordle ||= Wordle.for_game_num(wordle.game_number + 17)
+  end
+
   def finished?
     aoe_date = Time.current.in_time_zone('International Date Line West').to_date
-    wordle.date < (aoe_date - 18.days)
+    final_wordle.date < aoe_date
   end
 
   def reversed_result_for_user_id_by_idx(user_id, idx)
