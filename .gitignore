@@ -43,3 +43,4 @@ docker-compose.override.yml
 yarn-error.log
 
 /config/credentials/production.key
+app/assets/images/GitHub-Mark.png

@@ -13,3 +13,4 @@ coverage
 config/credentials/*.key
 /config/master.key
 /config/credentials/production.key
+app/assets/images/GitHub-Mark.png
